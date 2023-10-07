@@ -1,0 +1,28 @@
+volumes:
+  drupal-site:
+  drupal-module:
+  drupal-profile:
+  drupal-theme:
+
+services:
+  drupal:
+    image: drupal
+    build: .
+    ports:
+      - 8080:80
+    volumes:
+      - drupal-site:/var/www/html/sites
+      - drupal-module:/var/www/html/modules
+      - drupal-profile:/var/www/html/profiles
+      - drupal-theme:/var/www/html/themes
+
+  postgres:
+    image: postgres
+    secrets:
+      - psql_pass
+    environment:
+      POSTGRES_PASSWORD_FILE: /run/secrets/psql_pass
+
+secrets:
+  psql_pass:
+    file: psql_pass.txt
